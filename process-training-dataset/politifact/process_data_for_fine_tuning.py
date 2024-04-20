@@ -3,7 +3,7 @@ import sys
 sys.stdout.reconfigure(encoding='utf-8')
 
 
-def build_training_data(filename):
+def process_data_for_fine_tuning(filename):
     with open(filename, encoding="utf-8") as file:
         json_file = json.load(file)
 
@@ -24,4 +24,4 @@ def build_training_data(filename):
 
 # process training data
 SOURCE_FILE = "data/politifact_3000.json"
-build_training_data(SOURCE_FILE)
+process_data_for_fine_tuning(SOURCE_FILE)
