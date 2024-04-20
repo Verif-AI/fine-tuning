@@ -40,14 +40,14 @@ class Llama2Wrapper:
             output_tokens = result["generation_token_count"]
             output = result["generation"]
 
-            print("Invocation details:")
-            print(f"- The input length is {input_tokens} tokens.")
-            print(f"- The output length is {output_tokens} tokens.")
+            #print("Invocation details:")
+            #print(f"- The input length is {input_tokens} tokens.")
+            #print(f"- The output length is {output_tokens} tokens.")
 
-            print(f"- The model returned 1 response(s):")
+            #print(f"- The model returned 1 response(s):")
             print(output)
 
-            return result
+            return output
 
         except ClientError as err:
             logger.error(
@@ -71,5 +71,26 @@ def usage_demo():
     wrapper.invoke_with_text(text_prompt)
     print("-" * 88)
 
+def verify_model():
+    print("-" * 88)
+    print("Verify Verify.AI model with Llama 2 Chat 70B.")
+    print("-" * 88)
+
+    client = boto3.client(service_name="bedrock-runtime", region_name="us-east-1")
+    wrapper = Llama2Wrapper(client)
+
+    # test
+    TESTING_DATA = "data/politifact_for_fine_tuning_testing.jsonl"
+    with open(TESTING_DATA, encoding="utf-8") as file:
+        for idx, doc in enumerate(file):
+            json_doc = json.loads(doc)
+            text_prompt = json_doc["prompt"] + ", please give an answer TRUE or FALSE."
+            #print(f"Invoking Llama 2 Chat 70B with '{text_prompt}'...")
+            completion = json_doc["completion"]
+            output = wrapper.invoke_with_text(text_prompt)
+            print("No : {}, Model answer : {}, Correct answer : {}".format(idx + 1, output, completion))
+            print("-" * 88)
+
 if __name__ == "__main__":
-    usage_demo()
+    #usage_demo()
+    verify_model()
