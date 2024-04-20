@@ -19,7 +19,8 @@ class Llama2Wrapper:
 
         # invoke llama2 with the text prompt
         base_model_id = "meta.llama2-70b-chat-v1"
-        provisioned_custom_model_arn = "arn:aws:bedrock:us-east-1:992382490885:custom-model/meta.llama2-70b-v1:0:4k/k09t52jlvdza"
+        #provisioned_custom_model_arn = "arn:aws:bedrock:us-east-1:992382490885:custom-model/meta.llama2-70b-v1:0:4k/k09t52jlvdza"
+        provisioned_custom_model_arn = "arn:aws:bedrock:us-east-1:992382490885:provisioned-model/ik33cz9vusi5"
 
         try:
             response = client.invoke_model(
