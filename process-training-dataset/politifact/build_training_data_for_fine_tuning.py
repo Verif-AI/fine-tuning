@@ -18,7 +18,7 @@ def build_training_data(filename):
                     completion = "objective false"
                 elif veracity == "true":
                     completion = "objective truth"
-                training_doc = {"prompt": prompt, "completion": veracity}
+                training_doc = {"prompt": prompt, "completion": completion}
             
                 print(json.dumps(training_doc))
 
