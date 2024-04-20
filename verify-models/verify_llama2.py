@@ -18,7 +18,8 @@ class Llama2Wrapper:
         )
 
         # invoke llama2 with the text prompt
-        model_id = "meta.llama2-70b-chat-v1"
+        # model_id = "meta.llama2-70b-chat-v1"
+        model_id = "meta.llama2-13b-chat-v1"
 
         try:
             response = client.invoke_model(

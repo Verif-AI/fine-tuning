@@ -18,14 +18,13 @@ class Llama2Wrapper:
         )
 
         # invoke llama2 with the text prompt
-        base_model_id = "meta.llama2-70b-chat-v1"
+        #base_model_id = "meta.llama2-70b-chat-v1"
         #provisioned_custom_model_arn = "arn:aws:bedrock:us-east-1:992382490885:custom-model/meta.llama2-70b-v1:0:4k/k09t52jlvdza"
         provisioned_custom_model_arn = "arn:aws:bedrock:us-east-1:992382490885:provisioned-model/ik33cz9vusi5"
 
         try:
             response = client.invoke_model(
                 modelId=provisioned_custom_model_arn,
-                modelId=base_model_id,
                 body=json.dumps(
                     {
                         "prompt": prompt,
@@ -48,13 +47,13 @@ class Llama2Wrapper:
             #print(f"- The output length is {output_tokens} tokens.")
 
             #print(f"- The model returned 1 response(s):")
-            print(output)
+            #print(output)
 
             return output
 
         except ClientError as err:
             logger.error(
-                "Couldn't invoke Llama 2 Chat 70B. Here's why: %s: %s",
+                "Couldn't invoke Llama 2 Chat 70B Fine Tuning. Here's why: %s: %s",
                 err.response["Error"]["Code"],
                 err.response["Error"]["Message"],
             )
@@ -62,7 +61,7 @@ class Llama2Wrapper:
 
 def usage_demo():
     print("-" * 88)
-    print("Welcome to the Amazon Bedrock Runtime demo with Llama 2 Chat 70B.")
+    print("Welcome to the Amazon Bedrock Runtime demo with Llama 2 Chat 70B Fine Tuning.")
     print("-" * 88)
 
     client = boto3.client(service_name="bedrock-runtime", region_name="us-east-1")
@@ -76,7 +75,7 @@ def usage_demo():
 
 def verify_model():
     print("-" * 88)
-    print("Verify Verify.AI model with Llama 2 Chat 70B.")
+    print("Verify Verify.AI model with Llama 2 Chat 70B Fine Tuning.")
     print("-" * 88)
 
     client = boto3.client(service_name="bedrock-runtime", region_name="us-east-1")
@@ -86,13 +85,14 @@ def verify_model():
     TESTING_DATA = "data/politifact_for_fine_tuning_testing.jsonl"
     with open(TESTING_DATA, encoding="utf-8") as file:
         for idx, doc in enumerate(file):
-            json_doc = json.loads(doc)
-            text_prompt = json_doc["prompt"] + ", please give an answer TRUE or FALSE."
-            #print(f"Invoking Llama 2 Chat 70B with '{text_prompt}'...")
-            completion = json_doc["completion"]
-            output = wrapper.invoke_with_text(text_prompt)
-            print("No : {}, Model answer : {}, Correct answer : {}".format(idx + 1, output, completion))
-            print("-" * 88)
+            if idx < 2:
+                json_doc = json.loads(doc)
+                text_prompt = json_doc["prompt"] + ", please direct answer the result of fact checking by objective TRUE or FALSE."
+                #print(f"Invoking Llama 2 Chat 70B with '{text_prompt}'...")
+                completion = json_doc["completion"]
+                output = wrapper.invoke_with_text(text_prompt)
+                print("No : {}, Model answer : {}, Correct answer : {}".format(idx + 1, output, completion))
+                print("-" * 88)
 
 if __name__ == "__main__":
     #usage_demo()
