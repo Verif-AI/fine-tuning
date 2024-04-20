@@ -10,10 +10,11 @@ def process_data_for_fine_tuning(filename):
         for idx, json_doc in enumerate(json_file):
             claim = json_doc["claim"]
             veracity = json_doc["veracity"]
+            review_article = json_doc["review_article"]
 
             if veracity in ["pants-fire", "false", "true"]:
                 # build training data
-                prompt = "Please do fact checking for " + claim
+                prompt = "Please do fact checking for CLAIM '" + claim + "' with CONTEXT '" + review_article + "'"
                 if veracity in ["pants-fire", "false"]:
                     completion = "objective false"
                 elif veracity == "true":
